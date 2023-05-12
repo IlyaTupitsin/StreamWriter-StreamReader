@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.IO;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+
 namespace урок15._04._23
 {
     public partial class Form1 : Form
@@ -15,6 +17,8 @@ namespace урок15._04._23
         public Form1()
         {
             InitializeComponent();
+            this.открытьToolStripMenuItem.Click += new System.EventHandler(this.button1_Click);
+            this.сохранитьToolStripMenuItem.Click += new System.EventHandler(this.button2_Click);
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -88,12 +92,51 @@ namespace урок15._04._23
                 sr.Close();
             }
         }
-            private void Form1_Load(object sender, EventArgs e)
+
+        private void button2_Click_1(object sender, EventArgs e)
+        {
+            // 1. Проверка, открыт ли файл
+            if (!f_open) return;
+
+            // 2. Если файл открыт, то проверка – сохранен ли он
+            if (f_save) return;
+
+            // 3. Создание объекта типа StreamWriter и получение строчных данных
+            StreamWriter sw = File.CreateText(openFileDialog1.FileName);
+
+            // 4. Чтение строк с richTextBox1 и добавление их в файл
+            string line;
+            for (int i = 0; i < richTextBox1.Lines.Length; i++)
             {
-                f_open = false;
-                f_save = false;
-                label1.Text = "-";
-                richTextBox1.Text = "";
+                // 4.1. Чтение одной строки
+                line = richTextBox1.Lines[i].ToString();
+
+                // 4.2. Добавление этой строки в файл
+                sw.WriteLine(line);
             }
+
+            // 5. Закрыть объект sw
+            sw.Close();
+
+
+        }
+
+        private void открытьToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void сохранитьToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            f_open = false;
+            f_save = false;
+            label1.Text = "-";
+            richTextBox1.Text = "";
         }
     }
+} 
